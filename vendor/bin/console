@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/../autoload.php';
+
+use Symfony\Component\Console\Application;
+use Console\App\Commands\{
+    User\DeveloperUserCommand,
+    User\DesignerUserCommand,
+    User\ManagerUserCommand,
+    User\TesterUserCommand,
+    Can\DeveloperCanCommand,
+    Can\ManagerCanCommand,
+    Can\DesignerCanCommand,
+    Can\TesterCanCommand,
+};
+
+$app = new Application();
+
+$app->addCommands([
+    new DeveloperUserCommand(),
+    new ManagerUserCommand(),
+    new TesterUserCommand(),
+    new DesignerUserCommand(),
+    new DeveloperCanCommand(),
+    new ManagerCanCommand(),
+    new DesignerCanCommand(),
+    new TesterCanCommand(),
+]);
+
+$app->run();
