@@ -14,7 +14,7 @@ class Developer extends BaseItUser
     /**
      * @var string[]
      */
-    protected $availableMethods = [
+    protected $availableSkillNames = [
         UserSkillMethod::COMMUNICATE_WITH_MANAGER,
         UserSkillMethod::WRITE_CODE,
         UserSkillMethod::TEST_CODE,

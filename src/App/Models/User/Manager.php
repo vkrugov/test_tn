@@ -14,7 +14,7 @@ class Manager extends BaseItUser
     /**
      * @var string[]
      */
-    protected $availableMethods = [
+    protected $availableSkillNames = [
         UserSkillMethod::SET_TASK,
     ];
 }

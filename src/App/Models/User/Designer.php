@@ -16,7 +16,7 @@ class Designer extends BaseItUser
     /**
      * @var string[]
      */
-    protected $availableMethods = [
+    protected $availableSkillNames = [
         self::DRAW,
         UserSkillMethod::COMMUNICATE_WITH_MANAGER,
     ];

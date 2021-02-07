@@ -14,7 +14,7 @@ class Tester extends BaseItUser
     /**
      * @var string[]
      */
-    protected $availableMethods = [
+    protected $availableSkillNames = [
         UserSkillMethod::COMMUNICATE_WITH_MANAGER,
         UserSkillMethod::SET_TASK,
         UserSkillMethod::TEST_CODE,

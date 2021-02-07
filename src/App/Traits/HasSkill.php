@@ -2,20 +2,32 @@
 
 namespace App\Traits;
 
+/**
+ * Trait HasSkill
+ * @package App\Traits
+ *
+ * You can use thus trait for different subjects (users, animals) to set different skills and description of skills.
+ *
+ * Firstly spot default subject's skills in getDefaultSkills() method.
+ * The key is the name of one of the skill (string).  The value is a description of this skill (string).
+ * Also you have to set some of spotted skill names in $availableSkillNames. After it user will be had some skills.
+ *
+ * Use $personalSkills to set additional skills. It can be usefully for children subjects.
+ */
 trait HasSkill
 {
     /**
-     * This array contains names of available subject's skill methods.
+     * This array contains names of available subject's skill banes.
      *
      * @var string[]
      */
-    protected $availableMethods = [];
+    protected $availableSkillNames = [];
 
     /**
      * This array contains additional skills which the subject can develop himself.
-     * If you want to create a new skill method you have to write skill name and description in this array.
-     * It can be usefull for children subjects.
-     * The key is the name of one of the skill methods.  The value is a description of this method.
+     * If you want to create a new skill you have to write skill name and description in this array.
+     * It can be useful for children subjects.
+     * The key is the name of one of the skill.  The value is a description of this skill.
      *
      * @var array
      */
@@ -30,11 +42,11 @@ trait HasSkill
 
     /**
      * This array contains all skills which the subject can develop himself.
-     * The key is the name of one of the skill methods.  The value is a description of this method.
+     * The key is the name of one of the skill (string).  The value is a description of this skill (string).
      *
      * @var array
      */
-    private $skillMethods = [];
+    private $spottedSkills = [];
 
     /**
      * @return self
@@ -53,14 +65,14 @@ trait HasSkill
      */
     private function setDefaultSkills(): self
     {
-        $this->skillMethods = $this->getDefaultSkills();
+        $this->spottedSkills = $this->getDefaultSkills();
 
         return $this;
     }
 
     /**
      * Set default skills for the subject
-     * The key is the name of one of the skill methods.  The value is a description of this method.
+     * The key is the name of the skill (string).  The value is a description of this skill (string).
      * @return array
      */
     abstract public function getDefaultSkills(): array;
@@ -72,10 +84,10 @@ trait HasSkill
     {
         foreach ($this->personalSkills as $skill => $description) {
             $formatSkill = $this->formatNewSkill($skill);
-            $this->skillMethods[$formatSkill] = $description;
+            $this->spottedSkills[$formatSkill] = $description;
 
             if ($skill !== $formatSkill) {
-                array_push($this->availableMethods, $formatSkill);
+                array_push($this->availableSkillNames, $formatSkill);
             }
         }
 
@@ -96,7 +108,7 @@ trait HasSkill
      */
     private function setSkills()
     {
-        foreach ($this->skillMethods as $skill => $description) {
+        foreach ($this->spottedSkills as $skill => $description) {
             if ($this->hasSkill($skill)) {
                 array_push($this->skills, $description);
             }
@@ -125,9 +137,9 @@ trait HasSkill
     /**
      * @return array
      */
-    private function getAvailableMethods(): array
+    private function getAvailableNames(): array
     {
-        return $this->availableMethods;
+        return $this->availableSkillNames;
     }
 
     /**
@@ -136,6 +148,6 @@ trait HasSkill
      */
     private function hasSkill(string $skill): bool
     {
-        return array_search($skill, $this->getAvailableMethods(), true) !== false && !empty($this->skillMethods[$skill]);
+        return array_search($skill, $this->getAvailableNames(), true) !== false && !empty($this->spottedSkills[$skill]);
     }
 }
