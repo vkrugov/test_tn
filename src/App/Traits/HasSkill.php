@@ -1,25 +1,20 @@
 <?php
 
-namespace Console\App\Models\Base;
+namespace App\Traits;
 
-use Console\App\Enums\UserSkillMethod;
-
-/**
- * Class BaseUser
- * @package Console\App\Models\Base
- */
-abstract class BaseUser
+trait HasSkill
 {
     /**
-     * This array contains names of available user's skill methods.
+     * This array contains names of available subject's skill methods.
      *
      * @var string[]
      */
     protected $availableMethods = [];
 
     /**
-     * This array contains additional skills which the user can develop himself.
+     * This array contains additional skills which the subject can develop himself.
      * If you want to create a new skill method you have to write skill name and description in this array.
+     * It can be usefull for children subjects.
      * The key is the name of one of the skill methods.  The value is a description of this method.
      *
      * @var array
@@ -27,61 +22,53 @@ abstract class BaseUser
     protected $personalSkills = [];
 
     /**
-     * This array description of available user skills.
+     * This array description of available subject skills.
      *
      * @var array
      */
     private $skills = [];
 
     /**
-     * This array contains all skills which the user can develop himself.
+     * This array contains all skills which the subject can develop himself.
      * The key is the name of one of the skill methods.  The value is a description of this method.
      *
      * @var array
      */
-    private $skillMethods = [
-        UserSkillMethod::WRITE_CODE => 'code writing',
-        UserSkillMethod::TEST_CODE => 'code testing',
-        UserSkillMethod::COMMUNICATE_WITH_MANAGER => 'communication with manager',
-        UserSkillMethod::SET_TASK => 'set task',
-    ];
+    private $skillMethods = [];
 
     /**
-     * @param $name
-     * @param $arguments
-     * @return bool|null
+     * @return self
      */
-    public function __call($name, $arguments)
+    protected function setSubjectSkills(): self
     {
-        if ($this->hasSkill($name)) {
-            return true;
-        }
-
-        return null;
-    }
-
-    /**
-     * BaseUser constructor.
-     */
-    public function __construct()
-    {
-        $this->setUserSkills();
-    }
-
-    /**
-     * @return BaseUser
-     */
-    protected function setUserSkills(): BaseUser
-    {
-        $this->setPersonalSkill()->setSkills();
+        $this->setDefaultSkills()
+            ->setPersonalSkill()
+            ->setSkills();
 
         return $this;
     }
 
     /**
-     * @return $this
+     * @return self
      */
-    private function setPersonalSkill(): BaseUser
+    private function setDefaultSkills(): self
+    {
+        $this->skillMethods = $this->getDefaultSkills();
+
+        return $this;
+    }
+
+    /**
+     * Set default skills for the subject
+     * The key is the name of one of the skill methods.  The value is a description of this method.
+     * @return array
+     */
+    abstract public function getDefaultSkills(): array;
+
+    /**
+     * @return self
+     */
+    private function setPersonalSkill(): self
     {
         foreach ($this->personalSkills as $skill => $description) {
             $formatSkill = $this->formatNewSkill($skill);
@@ -105,12 +92,12 @@ abstract class BaseUser
     }
 
     /**
-     * Set available skills for user
+     * Set available skills for subject.
      */
-    private function setSkills(): BaseUser
+    private function setSkills()
     {
         foreach ($this->skillMethods as $skill => $description) {
-            if (!empty($this->{$skill}())) {
+            if ($this->hasSkill($skill)) {
                 array_push($this->skills, $description);
             }
         }
@@ -124,7 +111,7 @@ abstract class BaseUser
      */
     public function canDo(string $skill): bool
     {
-        return $this->{$skill}() === true;
+        return $this->hasSkill($skill);
     }
 
     /**
@@ -149,6 +136,6 @@ abstract class BaseUser
      */
     private function hasSkill(string $skill): bool
     {
-        return array_search($skill, $this->getAvailableMethods()) !== false && !empty($this->skillMethods[$skill]);
+        return array_search($skill, $this->getAvailableMethods(), true) !== false && !empty($this->skillMethods[$skill]);
     }
 }

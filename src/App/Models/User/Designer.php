@@ -3,13 +3,13 @@
 namespace Console\App\Models\User;
 
 use Console\App\Enums\UserSkillMethod;
-use Console\App\Models\Base\BaseUser;
+use Console\App\Models\Base\BaseItUser;
 
 /**
  * Class Designer
  * @package Console\App\Models\User
  */
-class Designer extends BaseUser
+class Designer extends BaseItUser
 {
     const DRAW = 'draw';
 
@@ -25,6 +25,6 @@ class Designer extends BaseUser
      * @var array
      */
     protected $personalSkills = [
-        self::DRAW => 'draw',
+        self::DRAW => 'can draw',
     ];
 }

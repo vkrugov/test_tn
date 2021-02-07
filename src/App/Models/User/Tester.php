@@ -3,13 +3,13 @@
 namespace Console\App\Models\User;
 
 use Console\App\Enums\UserSkillMethod;
-use Console\App\Models\Base\BaseUser;
+use Console\App\Models\Base\BaseItUser;
 
 /**
  * Class Tester
  * @package Console\App\Models\User
  */
-class Tester extends BaseUser
+class Tester extends BaseItUser
 {
     /**
      * @var string[]

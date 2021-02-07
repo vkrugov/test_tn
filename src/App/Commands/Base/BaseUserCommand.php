@@ -2,7 +2,7 @@
 
 namespace Console\App\Commands\Base;
 
-use Console\App\Models\Base\BaseUser;
+use Console\App\Models\Base\BaseItUser;
 
 /**
  * Class BaseUserCommand
@@ -11,10 +11,10 @@ use Console\App\Models\Base\BaseUser;
 abstract class BaseUserCommand extends BaseCommand
 {
     /**
-     * @param BaseUser $user
+     * @param BaseItUser $user
      * @return array
      */
-    protected function getUserSkills(BaseUser $user): array
+    protected function getUserSkills(BaseItUser $user): array
     {
         $skills = $user->getSkills();
 
